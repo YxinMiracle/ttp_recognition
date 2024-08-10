@@ -5,11 +5,11 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from nltk import pos_tag
 import re
-
-nltk.download('averaged_perceptron_tagger')
-nltk.download('punkt')
-nltk.download('wordnet')
-nltk.download('stopwords')
+#
+# nltk.download('averaged_perceptron_tagger')
+# nltk.download('punkt')
+# nltk.download('wordnet')
+# nltk.download('stopwords')
 
 
 def get_wordnet_pos(tag):

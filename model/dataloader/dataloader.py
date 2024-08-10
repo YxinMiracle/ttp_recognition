@@ -19,7 +19,29 @@ class MultiLabelDataset(Dataset):
         return len(self.data_x)
 
 
-def get_train_dataloader(data):
+def get_tactic_train_dataloader(data):
+    train, test = train_test_split(data, test_size=0.2, random_state=42)
+    validation, test = train_test_split(test, test_size=0.5, random_state=42)
+
+    df_ta_train = train[['text_clean', 'tactic_label']]
+    df_ta_val = validation[['text_clean', 'tactic_label']]
+    df_ta_test = test[['text_clean', 'tactic_label']]
+    df_ta_train = df_ta_train.rename(columns={'text_clean': 'text', 'tactic_label': 'labels'})
+    df_ta_val = df_ta_val.rename(columns={'text_clean': 'text', 'tactic_label': 'labels'})
+    df_ta_test = df_ta_test.rename(columns={'text_clean': 'text', 'tactic_label': 'labels'})
+
+    train_dataset = MultiLabelDataset(df_ta_train['text'].tolist(), df_ta_train['labels'].tolist())
+    val_dataset = MultiLabelDataset(df_ta_val['text'].tolist(), df_ta_val['labels'].tolist())
+    test_dataset = MultiLabelDataset(df_ta_test['text'].tolist(), df_ta_test['labels'].tolist())
+    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True, pin_memory=True,
+                              drop_last=True)
+    valid_loader = DataLoader(val_dataset, batch_size=64, shuffle=True, pin_memory=True, drop_last=True)
+    test_loader = DataLoader(test_dataset, batch_size=64, shuffle=True, pin_memory=True, drop_last=True)
+
+    return train_loader, valid_loader, test_loader
+
+
+def get_technique_train_dataloader(data):
     train, test = train_test_split(data, test_size=0.2, random_state=42)
     validation, test = train_test_split(test, test_size=0.5, random_state=42)
 
@@ -31,7 +53,7 @@ def get_train_dataloader(data):
     df_te_test = df_te_test.rename(columns={'text_clean': 'text', 'technique_label': 'labels'})  # 改名字
 
     train_dataset = MultiLabelDataset(df_te_train['text'].tolist(), df_te_train['labels'].tolist())
-    val_dataset = MultiLabelDataset(df_te_val['text'].tolist(), df_te_val['labels'].tolist() )
+    val_dataset = MultiLabelDataset(df_te_val['text'].tolist(), df_te_val['labels'].tolist())
     test_dataset = MultiLabelDataset(df_te_test['text'].tolist(), df_te_test['labels'].tolist())
     train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True, pin_memory=True,
                               drop_last=True)

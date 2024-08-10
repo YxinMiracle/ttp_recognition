@@ -13,8 +13,11 @@ def get_params():
     parser.add_argument("--saved_mode_name", type=str, default="model.pt")
     parser.add_argument("--train_log_file_name", type=str, default="train.log")
     parser.add_argument("--save_directory_name", type=str, default="save", help="data directory name")
-    parser.add_argument("--log_directory_name", type=str, default="log", help="data directory name")
+    parser.add_argument("--log_directory_name", type=str, default="log", help="log directory name")
     parser.add_argument("--swa_warmup", type=int, default=10, help="swa_warmup")
+    parser.add_argument("--tactic_n_class", type=int, default=14, help="tactic n class")
+    parser.add_argument("--technique_n_class", type=int, default=576, help="technique n class")
+    parser.add_argument("--windows", type=int, default=7, help="windows")
 
     parser.add_argument("--seed", default=7777, type=int)
     parser.add_argument("--step", default=100, type=int)
@@ -28,10 +31,12 @@ def get_params():
                         help="dropout rate for input word embedding")
     parser.add_argument("--steps", default=50, type=int,
                         help="show result for every 50 steps")
-    parser.add_argument("--lr", default=0.0001, type=float,
+    parser.add_argument("--lr", default=3e-5, type=float,
                         help="initial learning rate")
     parser.add_argument("--clip", default=0.25, type=float,
                         help="grad norm clipping to avoid gradient explosion")
+    parser.add_argument("--weight_decay", default=0, type=float,
+                        help="weight decaying rate")
     params = parser.parse_args()
     return params
 
